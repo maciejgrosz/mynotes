@@ -20,7 +20,7 @@ const NotePage = () => {
     }
 
     let createNote = async() => {
-        fetch(`/api/notes/create/`, {
+        fetch(`/api/notes/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ const NotePage = () => {
     }
 
     let updateNote = async() => {
-        fetch(`/api/notes/${noteId}/update/`, {
+        fetch(`/api/notes/${noteId}/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -39,8 +39,17 @@ const NotePage = () => {
         })
     }
 
+    let deleteNote = async() => {
+        fetch(`/api/notes/${noteId}/`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        navigate("/")
+    }
+
     let handleSubmit = ()=> {
-        console.log('NOTE', note)
         if(noteId !== 'new' && note.body == ''){
             deleteNote()
         }else if(noteId !== 'new'){
@@ -51,16 +60,6 @@ const NotePage = () => {
         navigate("/")
     }
 
-    let deleteNote = async() => {
-        fetch(`/api/notes/${noteId}/delete/`, {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        navigate("/")
-
-    }
     return (
         <div className="note">
             <div className="note-header">
@@ -68,7 +67,11 @@ const NotePage = () => {
                     <ArrowLeft onClick={handleSubmit}/> 
                 </h3>
                 {noteId !== 'new' ? (
-                    <button onClick={deleteNote}>Delete</button>
+                    <div> 
+                        <button onClick={handleSubmit}>Edit</button>
+                        <div class="space"></div>
+                        <button onClick={deleteNote}>Delete</button>
+                    </div>
                 ): (
                     <button onClick={handleSubmit}>Done</button>
                 )}
